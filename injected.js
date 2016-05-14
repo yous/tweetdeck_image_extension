@@ -60,7 +60,10 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
         var preview = makeMediaPreview(expandedURL);
-        tweet.parentNode.insertBefore(preview, tweet.nextSibling);
+        tweet.parentNode.insertBefore(
+          preview,
+          tweet.parentNode.querySelector(".tweet-footer")
+        );
       }
     }
   }
