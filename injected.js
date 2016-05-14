@@ -6,9 +6,9 @@ function makeMediaPreview(link) {
   previewContainer.className = "js-media-preview-container position-rel margin-vm";
 
   var previewLink = document.createElement("a");
-  previewLink.className = "js-media-image-link block med-link media-item is-zoomable";
+  previewLink.className = "js-media-image-link block med-link media-item";
   previewLink.href = link;
-  previewLink.setAttribute("rel", "mediaPreview");
+  previewLink.setAttribute("rel", "url");
   previewLink.setAttribute("target", "_blank");
   previewLink.style = "background-image:url(" + link + ")";
 
@@ -28,9 +28,9 @@ function makeMediaDetail(link) {
   previewContainer.className = "js-media-preview-container position-rel margin-vm";
 
   var previewLink = document.createElement("a");
-  previewLink.className = "js-media-image-link block med-link media-item is-zoomable";
+  previewLink.className = "js-media-image-link block med-link media-item";
   previewLink.href = link;
-  previewLink.setAttribute("rel", "mediaPreview");
+  previewLink.setAttribute("rel", "url");
   previewLink.setAttribute("target", "_blank");
 
   var previewImage = document.createElement("img");
