@@ -1,6 +1,6 @@
 function makeMediaPreview(link, imgURL) {
   var preview = document.createElement("div");
-  preview.className = "js-media media-preview position-rel";
+  preview.className = "js-media media-preview position-rel expanded";
 
   var previewContainer = document.createElement("div");
   previewContainer.className = "js-media-preview-container position-rel margin-vm";
@@ -22,7 +22,7 @@ function makeMediaDetail(link, imgURL) {
   detail.className = ".js-tweet-media tweet-detail-media";
 
   var detailPreview = document.createElement("div");
-  detailPreview.className = "js-media media-preview detail-preview";
+  detailPreview.className = "js-media media-preview detail-preview expanded";
 
   var previewContainer = document.createElement("div");
   previewContainer.className = "js-media-preview-container position-rel margin-vm";
@@ -61,9 +61,11 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
         var preview = makeMediaPreview(expandedURL, expandedURL);
-        tweet.parentNode.insertBefore(
+        var tweetBody = tweet.parentNode;
+        var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.expanded)");
+        tweetBody.insertBefore(
           preview,
-          tweet.parentNode.querySelector(".tweet-footer")
+          existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
         );
       } else if (instagramRegex.test(expandedURL)) {
         expandedURL = expandedURL.replace(/^http:\/\//, "https://");
@@ -76,9 +78,11 @@ function expandLinks(node) {
           container.innerHTML = xhr.responseText;
           var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
           var preview = makeMediaPreview(expandedURL, imageURL);
-          tweet.parentNode.insertBefore(
+          var tweetBody = tweet.parentNode;
+          var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.expanded)");
+          tweetBody.insertBefore(
             preview,
-            tweet.parentNode.querySelector(".tweet-footer")
+            existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
           );
         };
         xhr.send();
@@ -98,9 +102,11 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
         var detail = makeMediaDetail(expandedURL, expandedURL);
-        tweetDetail.parentNode.insertBefore(
+        var tweet = tweetDetail.parentNode;
+        var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.expanded)");
+        tweet.insertBefore(
           detail,
-          tweetDetail.parentNode.querySelector(".js-tweet-media.tweet-detail-media")
+          existingMedia[existingMedia.length - 1] || null
         );
       } else if (instagramRegex.test(expandedURL)) {
         expandedURL = expandedURL.replace(/^http:\/\//, "https://");
@@ -113,11 +119,13 @@ function expandLinks(node) {
           container.innerHTML = xhr.responseText;
           var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
           var detail = makeMediaDetail(expandedURL, imageURL);
-          tweetDetail.parentNode.insertBefore(
+          var tweet = tweetDetail.parentNode;
+          var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.expanded)");
+          tweet.insertBefore(
             detail,
-            tweetDetail.parentNode.querySelector(".js-tweet-media.tweet-detail-media")
+            existingMedia[existingMedia.length - 1] || null
           );
-        }
+        };
         xhr.send();
       }
     }
