@@ -1,3 +1,7 @@
+function forceHTTPS(link) {
+  return link.replace(/^http:\/\//, "https://");
+}
+
 function makeMediaPreview(link, imgURL) {
   var preview = document.createElement("div");
   preview.className = "js-media media-preview position-rel expanded";
@@ -45,6 +49,38 @@ function makeMediaDetail(link, imgURL) {
   return detail;
 }
 
+function insertMediaPreview(tweet, link, imgURL) {
+  var preview = makeMediaPreview(link, imgURL);
+  var tweetBody = tweet.parentNode;
+  var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.expanded)");
+  tweetBody.insertBefore(
+    preview,
+    existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
+  );
+}
+
+function insertMediaDetail(tweetDetail, link, imgURL) {
+  var detail = makeMediaDetail(link, imgURL);
+  var tweet = tweetDetail.parentNode;
+  var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.expanded)");
+  tweet.insertBefore(
+    detail,
+    existingMedia[existingMedia.length - 1] || null
+  );
+}
+
+function insertOpenGraphMedia(tweet, link, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", link, true);
+  xhr.onload = function(e) {
+    var container = document.implementation.createHTMLDocument().documentElement;
+    container.innerHTML = xhr.responseText;
+    var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
+    callback(tweet, link, imageURL);
+  }
+  xhr.send();
+}
+
 function expandLinks(node) {
   var puushRegex = /https?:\/\/puu\.sh\/(?:[\w_]+\/)*[\w_]+\.(?:gif|jpe?g|png)/;
   var instagramRegex = /https?:\/\/(?:www\.)?instagram\.com\/p\/\w+/;
@@ -57,37 +93,15 @@ function expandLinks(node) {
       var link = links[j];
       var expandedURL = link.getAttribute("data-full-url");
       if (puushRegex.test(expandedURL)) {
-        expandedURL = expandedURL.replace(/^http:\/\//, "https://");
+        expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
-        var preview = makeMediaPreview(expandedURL, expandedURL);
-        var tweetBody = tweet.parentNode;
-        var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.expanded)");
-        tweetBody.insertBefore(
-          preview,
-          existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
-        );
+        insertMediaPreview(expandedURL, expandedURL);
       } else if (instagramRegex.test(expandedURL)) {
-        expandedURL = expandedURL.replace(/^http:\/\//, "https://");
+        expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
-        (function(tweet, expandedURL) {
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", expandedURL, true);
-          xhr.onload = function(e) {
-            var container = document.implementation.createHTMLDocument().documentElement;
-            container.innerHTML = xhr.responseText;
-            var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
-            var preview = makeMediaPreview(expandedURL, imageURL);
-            var tweetBody = tweet.parentNode;
-            var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.expanded)");
-            tweetBody.insertBefore(
-              preview,
-              existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
-            );
-          };
-          xhr.send();
-        })(tweet, expandedURL);
+        insertOpenGraphMedia(tweet, expandedURL, insertMediaPreview);
       }
     }
   }
@@ -100,37 +114,15 @@ function expandLinks(node) {
       var link = links[j];
       var expandedURL = link.getAttribute("data-full-url");
       if (puushRegex.test(expandedURL)) {
-        expandedURL = expandedURL.replace(/^http:\/\//, "https://");
+        expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
-        var detail = makeMediaDetail(expandedURL, expandedURL);
-        var tweet = tweetDetail.parentNode;
-        var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.expanded)");
-        tweet.insertBefore(
-          detail,
-          existingMedia[existingMedia.length - 1] || null
-        );
+        insertMediaDetail(tweetDetail, expandedURL, expandedURL);
       } else if (instagramRegex.test(expandedURL)) {
-        expandedURL = expandedURL.replace(/^http:\/\//, "https://");
+        expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
-        (function(tweetDetail, expandedURL) {
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", expandedURL, true);
-          xhr.onload = function(e) {
-            var container = document.implementation.createHTMLDocument().documentElement;
-            container.innerHTML = xhr.responseText;
-            var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
-            var detail = makeMediaDetail(expandedURL, imageURL);
-            var tweet = tweetDetail.parentNode;
-            var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.expanded)");
-            tweet.insertBefore(
-              detail,
-              existingMedia[existingMedia.length - 1] || null
-            );
-          };
-          xhr.send();
-        })(tweetDetail, expandedURL);
+        insertOpenGraphMedia(tweetDetail, expandedURL, insertMediaDetail);
       }
     }
   }
