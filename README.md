@@ -8,7 +8,8 @@ Support additional image preview for [TweetDeck](https://tweetdeck.twitter.com).
 
 ## Screenshots
 
-![Screenshot](assets/Screenshot.png)
+![puu.sh](assets/puu.sh.png)
+![Instagram](assets/instagram.png)
 
 ## License
 

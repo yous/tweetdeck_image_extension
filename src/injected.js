@@ -47,6 +47,7 @@ function makeMediaDetail(link) {
 
 function expandLinks(node) {
   var puushRegex = /https?:\/\/puu\.sh\/(?:[\w_]+\/)*[\w_]+\.(?:gif|jpe?g|png)/;
+  var instagramRegex = /https?:\/\/(?:www\.)instagram\.com\/p\/\w+/;
 
   var tweets = node.querySelectorAll(".js-tweet.tweet .tweet-text");
   for (var i = 0; i < tweets.length; i++) {
@@ -64,6 +65,21 @@ function expandLinks(node) {
           preview,
           tweet.parentNode.querySelector(".tweet-footer")
         );
+      } else if (instagramRegex.test(expandedURL)) {
+        link.className += " expanded";
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", expandedURL, true);
+        xhr.onload = function(e) {
+          var container = document.implementation.createHTMLDocument().documentElement;
+          container.innerHTML = xhr.responseText;
+          var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
+          var preview = makeMediaPreview(imageURL);
+          tweet.parentNode.insertBefore(
+            preview,
+            tweet.parentNode.querySelector(".tweet-footer")
+          );
+        };
+        xhr.send();
       }
     }
   }
@@ -84,6 +100,21 @@ function expandLinks(node) {
           detail,
           tweetDetail.parentNode.querySelector(".js-tweet-media.tweet-detail-media")
         );
+      } else if (instagramRegex.test(expandedURL)) {
+        link.className += " expanded";
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", expandedURL, true);
+        xhr.onload = function(e) {
+          var container = document.implementation.createHTMLDocument().documentElement;
+          container.innerHTML = xhr.responseText;
+          var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
+          var detail = makeMediaDetail(imageURL);
+          tweetDetail.parentNode.insertBefore(
+            detail,
+            tweetDetail.parentNode.querySelector(".js-tweet-media.tweet-detail-media")
+          );
+        }
+        xhr.send();
       }
     }
   }

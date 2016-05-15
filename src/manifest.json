@@ -22,7 +22,9 @@
   "homepage_url": "https://github.com/yous/tweetdeck_image_extension",
   "incognito": "spanning",
   "permissions": [
-    "*://tweetdeck.twitter.com/*"
+    "*://tweetdeck.twitter.com/*",
+    "*://instagram.com/*",
+    "*://*.instagram.com/*"
   ],
   "short_name": "TD Image Ext"
 }
