@@ -19,7 +19,7 @@ function makeMediaPreview(link, imgURL) {
 
 function makeMediaDetail(link, imgURL) {
   var detail = document.createElement("div");
-  detail.className = "tweet-detail-media";
+  detail.className = ".js-tweet-media tweet-detail-media";
 
   var detailPreview = document.createElement("div");
   detailPreview.className = "js-media media-preview detail-preview";
@@ -49,7 +49,7 @@ function expandLinks(node) {
   var puushRegex = /https?:\/\/puu\.sh\/(?:[\w_]+\/)*[\w_]+\.(?:gif|jpe?g|png)/;
   var instagramRegex = /https?:\/\/(?:www\.)?instagram\.com\/p\/\w+/;
 
-  var tweets = node.querySelectorAll(".js-tweet.tweet .tweet-text");
+  var tweets = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet .tweet-text");
   for (var i = 0; i < tweets.length; i++) {
     var tweet = tweets[i];
     var links = tweet.querySelectorAll("a:not(.expanded)");
@@ -86,7 +86,7 @@ function expandLinks(node) {
     }
   }
 
-  var tweetDetails = node.querySelectorAll(".js-tweet.tweet-detail .tweet-text");
+  var tweetDetails = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet-detail .tweet-text");
   for (var i = 0; i < tweetDetails.length; i++) {
     var tweetDetail = tweetDetails[i];
     var links = tweetDetail.querySelectorAll("a:not(.expanded)");
