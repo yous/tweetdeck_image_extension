@@ -71,21 +71,23 @@ function expandLinks(node) {
         expandedURL = expandedURL.replace(/^http:\/\//, "https://");
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", expandedURL, true);
-        xhr.onload = function(e) {
-          var container = document.implementation.createHTMLDocument().documentElement;
-          container.innerHTML = xhr.responseText;
-          var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
-          var preview = makeMediaPreview(expandedURL, imageURL);
-          var tweetBody = tweet.parentNode;
-          var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.expanded)");
-          tweetBody.insertBefore(
-            preview,
-            existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
-          );
-        };
-        xhr.send();
+        (function(tweet, expandedURL) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", expandedURL, true);
+          xhr.onload = function(e) {
+            var container = document.implementation.createHTMLDocument().documentElement;
+            container.innerHTML = xhr.responseText;
+            var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
+            var preview = makeMediaPreview(expandedURL, imageURL);
+            var tweetBody = tweet.parentNode;
+            var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.expanded)");
+            tweetBody.insertBefore(
+              preview,
+              existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
+            );
+          };
+          xhr.send();
+        })(tweet, expandedURL);
       }
     }
   }
@@ -112,21 +114,23 @@ function expandLinks(node) {
         expandedURL = expandedURL.replace(/^http:\/\//, "https://");
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", expandedURL, true);
-        xhr.onload = function(e) {
-          var container = document.implementation.createHTMLDocument().documentElement;
-          container.innerHTML = xhr.responseText;
-          var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
-          var detail = makeMediaDetail(expandedURL, imageURL);
-          var tweet = tweetDetail.parentNode;
-          var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.expanded)");
-          tweet.insertBefore(
-            detail,
-            existingMedia[existingMedia.length - 1] || null
-          );
-        };
-        xhr.send();
+        (function(tweetDetail, expandedURL) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("GET", expandedURL, true);
+          xhr.onload = function(e) {
+            var container = document.implementation.createHTMLDocument().documentElement;
+            container.innerHTML = xhr.responseText;
+            var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
+            var detail = makeMediaDetail(expandedURL, imageURL);
+            var tweet = tweetDetail.parentNode;
+            var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.expanded)");
+            tweet.insertBefore(
+              detail,
+              existingMedia[existingMedia.length - 1] || null
+            );
+          };
+          xhr.send();
+        })(tweetDetail, expandedURL);
       }
     }
   }
