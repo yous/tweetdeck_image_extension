@@ -2,14 +2,19 @@
 
 Support additional image preview for [TweetDeck](https://tweetdeck.twitter.com).
 
+Image preview is supported for:
+
+- Instagram
+- puu.sh
+
 ## Installation
 
 [TweetDeck Image Extension on the Chrome Web Store](https://chrome.google.com/webstore/detail/tweetdeck-image-extension/pnbmleebcgilngfaiijcijbogkeiglml)
 
 ## Screenshots
 
-![puu.sh](assets/puu.sh.png)
 ![Instagram](assets/instagram.png)
+![puu.sh](assets/puu.sh.png)
 
 ## License
 
