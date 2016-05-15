@@ -47,7 +47,7 @@ function makeMediaDetail(link, imgURL) {
 
 function expandLinks(node) {
   var puushRegex = /https?:\/\/puu\.sh\/(?:[\w_]+\/)*[\w_]+\.(?:gif|jpe?g|png)/;
-  var instagramRegex = /https?:\/\/(?:www\.)instagram\.com\/p\/\w+/;
+  var instagramRegex = /https?:\/\/(?:www\.)?instagram\.com\/p\/\w+/;
 
   var tweets = node.querySelectorAll(".js-tweet.tweet .tweet-text");
   for (var i = 0; i < tweets.length; i++) {
@@ -66,6 +66,8 @@ function expandLinks(node) {
           tweet.parentNode.querySelector(".tweet-footer")
         );
       } else if (instagramRegex.test(expandedURL)) {
+        expandedURL = expandedURL.replace(/^http:\/\//, "https://");
+        link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
         var xhr = new XMLHttpRequest();
         xhr.open("GET", expandedURL, true);
@@ -101,6 +103,8 @@ function expandLinks(node) {
           tweetDetail.parentNode.querySelector(".js-tweet-media.tweet-detail-media")
         );
       } else if (instagramRegex.test(expandedURL)) {
+        expandedURL = expandedURL.replace(/^http:\/\//, "https://");
+        link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
         var xhr = new XMLHttpRequest();
         xhr.open("GET", expandedURL, true);
