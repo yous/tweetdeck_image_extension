@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.3
+
+- Fix bug that puu.sh preview isn't working
+
 ## 0.2.2
 
 - Support Instagram URL not having `www.` prefix
