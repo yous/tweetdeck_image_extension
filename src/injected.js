@@ -96,7 +96,7 @@ function expandLinks(node) {
         expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
         link.className += " expanded";
-        insertMediaPreview(expandedURL, expandedURL);
+        insertMediaPreview(tweet, expandedURL, expandedURL);
       } else if (instagramRegex.test(expandedURL)) {
         expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
