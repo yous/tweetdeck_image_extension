@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- Support https://youtu.be
+
 ## 0.2.3
 
 - Fix bug that puu.sh preview isn't working
