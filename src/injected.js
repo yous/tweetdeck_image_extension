@@ -2,12 +2,15 @@ function forceHTTPS(link) {
   return link.replace(/^http:\/\//, "https://");
 }
 
-function makeMediaPreview(link, imgURL) {
+function makeMediaPreview(link, imgURL, videoURL) {
   var preview = document.createElement("div");
   preview.className = "js-media media-preview position-rel tie-expanded";
 
   var previewContainer = document.createElement("div");
   previewContainer.className = "js-media-preview-container position-rel margin-vm";
+  if (videoURL) {
+    previewContainer.className += " is-video";
+  }
 
   var previewLink = document.createElement("a");
   previewLink.className = "js-media-image-link block med-link media-item";
@@ -16,41 +19,69 @@ function makeMediaPreview(link, imgURL) {
   previewLink.setAttribute("target", "_blank");
   previewLink.style = "background-image:url(" + imgURL + ")";
 
+  if (videoURL) {
+    var previewOverlay = document.createElement("div");
+    previewOverlay.className = "video-overlay icon-with-bg-round";
+
+    var previewIconBg = document.createElement("i");
+    previewIconBg.className = "icon icon-bg-dot icon-twitter-blue-color";
+
+    var previewIcon = document.createElement("i");
+    previewIcon.className = "icon icon-play-video";
+
+    previewOverlay.appendChild(previewIconBg);
+    previewOverlay.appendChild(previewIcon);
+    previewLink.appendChild(previewOverlay);
+  }
+
   previewContainer.appendChild(previewLink);
   preview.appendChild(previewContainer);
   return preview;
 }
 
-function makeMediaDetail(link, imgURL) {
+function makeMediaDetail(link, imgURL, videoURL) {
   var detail = document.createElement("div");
   detail.className = ".js-tweet-media tweet-detail-media";
 
   var detailPreview = document.createElement("div");
   detailPreview.className = "js-media media-preview detail-preview tie-expanded";
 
-  var previewContainer = document.createElement("div");
-  previewContainer.className = "js-media-preview-container position-rel margin-vm";
+  if (videoURL) {
+    previewPlayer = document.createElement("iframe");
+    previewPlayer.className = "youtube-player";
+    previewPlayer.setAttribute("type", "text/html");
+    previewPlayer.width = "100%";
+    previewPlayer.height = "auto";
+    previewPlayer.src = videoURL;
+    previewPlayer.allowFullscreen = true;
+    previewPlayer.frameBorder = "0";
 
-  var previewLink = document.createElement("a");
-  previewLink.className = "js-media-image-link block med-link media-item";
-  previewLink.href = link;
-  previewLink.setAttribute("rel", "url");
-  previewLink.setAttribute("target", "_blank");
+    detailPreview.appendChild(previewPlayer);
+  } else {
+    var previewContainer = document.createElement("div");
+    previewContainer.className = "js-media-preview-container position-rel margin-vm";
 
-  var previewImage = document.createElement("img");
-  previewImage.className = "media-img";
-  previewImage.src = imgURL;
-  previewImage.alt = "Media preview";
+    var previewLink = document.createElement("a");
+    previewLink.className = "js-media-image-link block med-link media-item";
+    previewLink.href = link;
+    previewLink.setAttribute("rel", "url");
+    previewLink.setAttribute("target", "_blank");
 
-  previewLink.appendChild(previewImage);
-  previewContainer.appendChild(previewLink);
-  detailPreview.appendChild(previewContainer);
+    var previewImage = document.createElement("img");
+    previewImage.className = "media-img";
+    previewImage.src = imgURL;
+    previewImage.alt = "Media preview";
+
+    previewLink.appendChild(previewImage);
+    previewContainer.appendChild(previewLink);
+    detailPreview.appendChild(previewContainer);
+  }
   detail.appendChild(detailPreview);
   return detail;
 }
 
-function insertMediaPreview(tweet, link, imgURL) {
-  var preview = makeMediaPreview(link, imgURL);
+function insertMediaPreview(tweet, link, imgURL, videoURL) {
+  var preview = makeMediaPreview(link, imgURL, videoURL);
   var tweetBody = tweet.parentNode;
   var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.tie-expanded)");
   tweetBody.insertBefore(
@@ -59,8 +90,8 @@ function insertMediaPreview(tweet, link, imgURL) {
   );
 }
 
-function insertMediaDetail(tweetDetail, link, imgURL) {
-  var detail = makeMediaDetail(link, imgURL);
+function insertMediaDetail(tweetDetail, link, imgURL, videoURL) {
+  var detail = makeMediaDetail(link, imgURL, videoURL);
   var tweet = tweetDetail.parentNode;
   var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.tie-expanded)");
   tweet.insertBefore(
@@ -84,6 +115,7 @@ function insertOpenGraphMedia(tweet, link, callback) {
 function expandLinks(node) {
   var puushRegex = /https?:\/\/puu\.sh\/(?:[\w_]+\/)*[\w_]+\.(?:gif|jpe?g|png)/;
   var instagramRegex = /https?:\/\/(?:www\.)?instagram\.com\/p\/\w+/;
+  var youtubeRegex = /https:\/\/youtu\.be\/(\w+)/;
 
   var tweets = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet .tweet-text");
   for (var i = 0; i < tweets.length; i++) {
@@ -102,6 +134,12 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
         insertOpenGraphMedia(tweet, expandedURL, insertMediaPreview);
+      } else if (youtubeRegex.test(expandedURL)) {
+        link.className += " tie-expanded";
+        var key = youtubeRegex.exec(expandedURL)[1];
+        var imageURL = "https://img.youtube.com/vi/" + key + "/mqdefault.jpg";
+        var videoURL = "https://www.youtube.com/embed/" + key + "?autoplay=0";
+        insertMediaPreview(tweet, expandedURL, imageURL, videoURL);
       }
     }
   }
@@ -123,6 +161,12 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
         insertOpenGraphMedia(tweetDetail, expandedURL, insertMediaDetail);
+      } else if (youtubeRegex.test(expandedURL)) {
+        link.className += " tie-expanded";
+        var key = youtubeRegex.exec(expandedURL)[1];
+        var imageURL = "https://img.youtube.com/vi/" + key + "/mqdefault.jpg";
+        var videoURL = "https://www.youtube.com/embed/" + key + "?autoplay=0";
+        insertMediaDetail(tweetDetail, expandedURL, imageURL, videoURL);
       }
     }
   }
