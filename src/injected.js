@@ -4,7 +4,7 @@ function forceHTTPS(link) {
 
 function makeMediaPreview(link, imgURL) {
   var preview = document.createElement("div");
-  preview.className = "js-media media-preview position-rel expanded";
+  preview.className = "js-media media-preview position-rel tie-expanded";
 
   var previewContainer = document.createElement("div");
   previewContainer.className = "js-media-preview-container position-rel margin-vm";
@@ -26,7 +26,7 @@ function makeMediaDetail(link, imgURL) {
   detail.className = ".js-tweet-media tweet-detail-media";
 
   var detailPreview = document.createElement("div");
-  detailPreview.className = "js-media media-preview detail-preview expanded";
+  detailPreview.className = "js-media media-preview detail-preview tie-expanded";
 
   var previewContainer = document.createElement("div");
   previewContainer.className = "js-media-preview-container position-rel margin-vm";
@@ -52,7 +52,7 @@ function makeMediaDetail(link, imgURL) {
 function insertMediaPreview(tweet, link, imgURL) {
   var preview = makeMediaPreview(link, imgURL);
   var tweetBody = tweet.parentNode;
-  var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.expanded)");
+  var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.tie-expanded)");
   tweetBody.insertBefore(
     preview,
     existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
@@ -62,7 +62,7 @@ function insertMediaPreview(tweet, link, imgURL) {
 function insertMediaDetail(tweetDetail, link, imgURL) {
   var detail = makeMediaDetail(link, imgURL);
   var tweet = tweetDetail.parentNode;
-  var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.expanded)");
+  var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.tie-expanded)");
   tweet.insertBefore(
     detail,
     existingMedia[existingMedia.length - 1] || null
@@ -88,19 +88,19 @@ function expandLinks(node) {
   var tweets = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet .tweet-text");
   for (var i = 0; i < tweets.length; i++) {
     var tweet = tweets[i];
-    var links = tweet.querySelectorAll("a:not(.expanded)");
+    var links = tweet.querySelectorAll("a:not(.tie-expanded)");
     for (var j = 0; j < links.length; j++) {
       var link = links[j];
       var expandedURL = link.getAttribute("data-full-url");
       if (puushRegex.test(expandedURL)) {
         expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
-        link.className += " expanded";
+        link.className += " tie-expanded";
         insertMediaPreview(tweet, expandedURL, expandedURL);
       } else if (instagramRegex.test(expandedURL)) {
         expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
-        link.className += " expanded";
+        link.className += " tie-expanded";
         insertOpenGraphMedia(tweet, expandedURL, insertMediaPreview);
       }
     }
@@ -109,19 +109,19 @@ function expandLinks(node) {
   var tweetDetails = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet-detail .tweet-text");
   for (var i = 0; i < tweetDetails.length; i++) {
     var tweetDetail = tweetDetails[i];
-    var links = tweetDetail.querySelectorAll("a:not(.expanded)");
+    var links = tweetDetail.querySelectorAll("a:not(.tie-expanded)");
     for (var j = 0; j < links.length; j++) {
       var link = links[j];
       var expandedURL = link.getAttribute("data-full-url");
       if (puushRegex.test(expandedURL)) {
         expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
-        link.className += " expanded";
+        link.className += " tie-expanded";
         insertMediaDetail(tweetDetail, expandedURL, expandedURL);
       } else if (instagramRegex.test(expandedURL)) {
         expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
-        link.className += " expanded";
+        link.className += " tie-expanded";
         insertOpenGraphMedia(tweetDetail, expandedURL, insertMediaDetail);
       }
     }
