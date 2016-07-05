@@ -6,6 +6,7 @@ Image preview is supported for:
 
 - Instagram
 - puu.sh
+- https://youtu.be
 
 ## Installation
 
