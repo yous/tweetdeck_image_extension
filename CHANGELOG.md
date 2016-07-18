@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- Ignore case for regex matching
+
 ## 0.3.0
 
 - Support https://youtu.be
