@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+
+- Use relaxed regex for YouTube URL
+
 ## 0.3.1
 
 - Ignore case for regex matching
