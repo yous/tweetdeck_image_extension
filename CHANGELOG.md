@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.3
+
+- Fix bug for the position of tweet detail images
+
 ## 0.3.2
 
 - Use relaxed regex for YouTube URL
