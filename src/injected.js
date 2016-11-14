@@ -115,7 +115,9 @@ function insertOpenGraphMedia(tweet, link, callback) {
 function expandLinks(node) {
   var puushRegex = /https?:\/\/puu\.sh\/(?:[\w-]+\/)*[\w-]+\.(?:gif|jpe?g|png)/i;
   var instagramRegex = /https?:\/\/(?:www\.)?instagram\.com\/p\/[\w-]+/i;
+  var pixivRegex = /https?:\/\/(?:www\.)?pixiv\.net\/member_illust\.php[\?\w_=&]+/i;
   var youtubeRegex = /https:\/\/youtu\.be\/([\w-]+)/i;
+
 
   var tweets = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet .tweet-text");
   for (var i = 0; i < tweets.length; i++) {
@@ -134,6 +136,15 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
         insertOpenGraphMedia(tweet, expandedURL, insertMediaPreview);
+      } else if (pixivRegex.test(expandedURL)) {
+        expandedURL = forceHTTPS(expandedURL);
+        link.setAttribute("data-full-url", expandedURL);
+        link.className += " tie-expanded";
+        chrome.runtime.sendMessage({type: "pixiv", url: expandedURL}, null, function(resp) {
+          var imageURL = resp.url;
+          var videoURL = null;
+          insertMediaPreview(tweet, expandedURL, resp.url, null);
+        });
       } else if (youtubeRegex.test(expandedURL)) {
         link.className += " tie-expanded";
         var key = youtubeRegex.exec(expandedURL)[1];
@@ -161,6 +172,15 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
         insertOpenGraphMedia(tweetDetail, expandedURL, insertMediaDetail);
+      } else if (pixivRegex.test(expandedURL)) {
+        expandedURL = forceHTTPS(expandedURL);
+        link.setAttribute("data-full-url", expandedURL);
+        link.className += " tie-expanded";
+        chrome.runtime.sendMessage({type: "pixiv", url: expandedURL}, null, function(resp) {
+          var imageURL = resp.url;
+          var videoURL = null;
+          insertMediaDetail(tweetDetail, expandedURL, imageURL, videoURL);
+        });
       } else if (youtubeRegex.test(expandedURL)) {
         link.className += " tie-expanded";
         var key = youtubeRegex.exec(expandedURL)[1];
