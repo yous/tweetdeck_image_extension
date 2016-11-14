@@ -7,6 +7,7 @@ Image preview is supported for:
 - Instagram
 - puu.sh
 - https://youtu.be
+- pixiv
 
 ## Installation
 
@@ -16,6 +17,7 @@ Image preview is supported for:
 
 ![Instagram](assets/instagram.png)
 ![puu.sh](assets/puu.sh.png)
+![pixiv](assets/pixiv.png)
 
 ## License
 
