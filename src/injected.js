@@ -41,7 +41,7 @@ function makeMediaPreview(link, imgURL, videoURL) {
 
 function makeMediaDetail(link, imgURL, videoURL) {
   var detail = document.createElement("div");
-  detail.className = ".js-tweet-media tweet-detail-media";
+  detail.className = "js-tweet-media margin-v--15 margin-h--0";
 
   var detailPreview = document.createElement("div");
   detailPreview.className = "js-media media-preview detail-preview tie-expanded";
@@ -93,7 +93,7 @@ function insertMediaPreview(tweet, link, imgURL, videoURL) {
 function insertMediaDetail(tweetDetail, link, imgURL, videoURL) {
   var detail = makeMediaDetail(link, imgURL, videoURL);
   var tweet = tweetDetail.parentNode;
-  var existingMedia = tweet.querySelectorAll(".js-tweet-media.tweet-detail-media:not(.tie-expanded)");
+  var existingMedia = tweet.querySelectorAll(".js-tweet-media:not(.tie-expanded)");
   tweet.insertBefore(
     detail,
     existingMedia[existingMedia.length - 1] || null
