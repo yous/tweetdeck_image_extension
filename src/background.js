@@ -1,16 +1,18 @@
 chrome.runtime.onMessage.addListener(onRuntimeMessage);
 
-function log () {
+function log() {
   var args = [(new Date()).toLocaleString() + " |"];
-  for (var i = 0; i < arguments.length; i++)
+  for (var i = 0; i < arguments.length; i++) {
     args.push(arguments[i]);
+  }
 
   console.log.apply(console, args);
 };
 
-function onRuntimeMessage (msg, sender, sendResponse) {
-  if (chrome.runtime.lastError)
-    log(chrome.runtime.lastError);            
+function onRuntimeMessage(msg, sender, sendResponse) {
+  if (chrome.runtime.lastError) {
+    log(chrome.runtime.lastError);
+  }
   var key = msg.type;
   switch (key) {
     case "pixiv":
@@ -22,7 +24,7 @@ function onRuntimeMessage (msg, sender, sendResponse) {
         var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
         var img = document.createElement("img");
         img.src = imageURL;
-        img.onload = function(){
+        img.onload = function() {
           var canvas = document.createElement("canvas");
           canvas.width = img.width;
           canvas.height = img.height;

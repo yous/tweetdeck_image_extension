@@ -118,7 +118,6 @@ function expandLinks(node) {
   var pixivRegex = /https?:\/\/(?:www\.)?pixiv\.net\/member_illust\.php[\?\w_=&]+/i;
   var youtubeRegex = /https:\/\/youtu\.be\/([\w-]+)/i;
 
-
   var tweets = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet .tweet-text");
   for (var i = 0; i < tweets.length; i++) {
     var tweet = tweets[i];
@@ -141,9 +140,7 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
         chrome.runtime.sendMessage({type: "pixiv", url: expandedURL}, null, function(resp) {
-          var imageURL = resp.url;
-          var videoURL = null;
-          insertMediaPreview(tweet, expandedURL, resp.url, null);
+          insertMediaPreview(tweet, expandedURL, resp.url);
         });
       } else if (youtubeRegex.test(expandedURL)) {
         link.className += " tie-expanded";
@@ -177,9 +174,7 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
         chrome.runtime.sendMessage({type: "pixiv", url: expandedURL}, null, function(resp) {
-          var imageURL = resp.url;
-          var videoURL = null;
-          insertMediaDetail(tweetDetail, expandedURL, imageURL, videoURL);
+          insertMediaDetail(tweetDetail, expandedURL, resp.url);
         });
       } else if (youtubeRegex.test(expandedURL)) {
         link.className += " tie-expanded";
