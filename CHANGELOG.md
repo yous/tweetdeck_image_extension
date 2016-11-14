@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+- Support pixiv ([#1](https://github.com/yous/tweetdeck_image_extension/pull/1))
+
 ## 0.3.3
 
 - Fix bug for the position of tweet detail images
