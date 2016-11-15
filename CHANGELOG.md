@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.1
+
+- Fix bug that previews of detail are getting replaced
+
 ## 0.4.0
 
 - Support pixiv ([#1](https://github.com/yous/tweetdeck_image_extension/pull/1))
