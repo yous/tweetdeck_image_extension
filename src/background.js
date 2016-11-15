@@ -31,7 +31,6 @@ function onRuntimeMessage(msg, sender, sendResponse) {
           var ctx = canvas.getContext("2d");
           ctx.drawImage(img, 0, 0);
           var dataURL = canvas.toDataURL("image/png");
-          log(dataURL);
           sendResponse({url: dataURL});
         }
         document.querySelector("body").appendChild(img);
