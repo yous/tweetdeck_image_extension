@@ -41,7 +41,10 @@ function makeMediaPreview(link, imgURL, videoURL) {
 
 function makeMediaDetail(link, imgURL, videoURL) {
   var detail = document.createElement("div");
-  detail.className = "js-tweet-media margin-v--15 margin-h--0";
+  // Actual className should be `js-tweet-media margin-v--15 margin-h--0`, but
+  // the `js-tweet-media` doesn't have any related CSS, and every element with
+  // `.js-tweet-media` will get replaced.
+  detail.className = "margin-v--15 margin-h--0";
 
   var detailPreview = document.createElement("div");
   detailPreview.className = "js-media media-preview detail-preview tie-expanded";
