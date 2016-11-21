@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.2
+
+- Fix memory leak bug
+
 ## 0.4.1
 
 - Fix bug that previews of detail are getting replaced
