@@ -36,9 +36,11 @@ function onRuntimeMessage(msg, sender, sendResponse) {
           ctx.drawImage(img, 0, 0);
           var dataURL = canvas.toDataURL("image/png");
           sendResponse({url: dataURL});
+          document.querySelector("body").removeChild(img);
         }
         img.onerror = function() {
           sendResponse({error: true});
+          document.querySelector("body").removeChild(img);
         }
         document.querySelector("body").appendChild(img);
       }
