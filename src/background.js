@@ -22,6 +22,10 @@ function onRuntimeMessage(msg, sender, sendResponse) {
         var container = document.implementation.createHTMLDocument().documentElement;
         container.innerHTML = xhr.responseText;
         var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
+        if (!imageURL) {
+          sendResponse({error: true});
+          return;
+        }
         var img = document.createElement("img");
         img.src = imageURL;
         img.onload = function() {
@@ -32,6 +36,9 @@ function onRuntimeMessage(msg, sender, sendResponse) {
           ctx.drawImage(img, 0, 0);
           var dataURL = canvas.toDataURL("image/png");
           sendResponse({url: dataURL});
+        }
+        img.onerror = function() {
+          sendResponse({error: true});
         }
         document.querySelector("body").appendChild(img);
       }
