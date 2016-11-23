@@ -2,7 +2,25 @@ function forceHTTPS(link) {
   return link.replace(/^http:\/\//, "https://");
 }
 
-function makeMediaPreview(link, imgURL, videoURL) {
+function retrieveVariable(key, variable) {
+  var body = document.querySelector("body");
+  var scriptContent = [
+    "if (typeof " + variable + " !== 'undefined') {",
+    "  var body = document.querySelector('body');",
+    "  body.setAttribute('tie-" + key + "', JSON.stringify(" + variable + "));",
+    "}"
+  ].join("\n");
+  var script = document.createElement("script");
+  script.appendChild(document.createTextNode(scriptContent));
+  body.appendChild(script);
+
+  var result = JSON.parse(body.getAttribute("tie-" + key));
+  body.removeAttribute("tie-" + key);
+  body.removeChild(script);
+  return result;
+}
+
+function makeMediaPreview(link, size, imgURL, videoURL) {
   var preview = document.createElement("div");
   preview.className = "js-media media-preview position-rel tie-expanded";
 
@@ -14,6 +32,12 @@ function makeMediaPreview(link, imgURL, videoURL) {
 
   var previewLink = document.createElement("a");
   previewLink.className = "js-media-image-link block med-link media-item";
+  switch (size) {
+    case "small":
+    case "medium":
+      previewLink.className += " media-size-" + size;
+      break;
+  }
   previewLink.href = link;
   previewLink.setAttribute("rel", "url");
   previewLink.setAttribute("target", "_blank");
@@ -84,7 +108,19 @@ function makeMediaDetail(link, imgURL, videoURL) {
 }
 
 function insertMediaPreview(tweet, link, imgURL, videoURL) {
-  var preview = makeMediaPreview(link, imgURL, videoURL);
+  var column = null;
+  var node = tweet;
+  while (node != null) {
+    if (node.hasAttribute("data-column")) {
+      column = node.getAttribute("data-column");
+      break;
+    }
+    node = node.parentNode;
+  }
+  var size = retrieveVariable(
+    column + "-media-preview-size",
+    "TD.controller.columnManager.get('" + column + "').getMediaPreviewSize()");
+  var preview = makeMediaPreview(link, size, imgURL, videoURL);
   var tweetBody = tweet.parentNode;
   var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.tie-expanded)");
   tweetBody.insertBefore(
