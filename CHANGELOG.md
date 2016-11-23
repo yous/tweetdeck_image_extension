@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- Support small, medium media preview for each column
+
 ## 0.4.2
 
 - Fix memory leak bug
