@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.1
+
+- Fix bug that media isn't displayed with quote tweets
+
 ## 0.5.0
 
 - Support small, medium media preview for each column
