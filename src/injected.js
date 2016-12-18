@@ -125,17 +125,19 @@ function insertMediaPreview(tweet, link, imgURL, videoURL) {
   }
   var preview = makeMediaPreview(link, size, imgURL, videoURL);
   var tweetBody = tweet.parentNode;
-  var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.tie-expanded)");
+  var existingMedia = tweetBody.querySelectorAll(":scope > .js-media.media-preview:not(.tie-expanded)");
   tweetBody.insertBefore(
     preview,
-    existingMedia[existingMedia.length - 1] || tweetBody.querySelector(".tweet-footer")
+    existingMedia[existingMedia.length - 1]
+      || tweetBody.querySelector(":scope > .js-quote-detail.quoted-tweet")
+      || tweetBody.querySelector(":scope > .tweet-footer")
   );
 }
 
 function insertMediaDetail(tweetDetail, link, imgURL, videoURL) {
   var detail = makeMediaDetail(link, imgURL, videoURL);
   var tweet = tweetDetail.parentNode;
-  var existingMedia = tweet.querySelectorAll(".js-tweet-media:not(.tie-expanded)");
+  var existingMedia = tweet.querySelectorAll(":scope > .js-tweet-media:not(.tie-expanded)");
   tweet.insertBefore(
     detail,
     existingMedia[existingMedia.length - 1] || null
