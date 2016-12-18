@@ -117,9 +117,12 @@ function insertMediaPreview(tweet, link, imgURL, videoURL) {
     }
     node = node.parentNode;
   }
-  var size = retrieveVariable(
-    column + "-media-preview-size",
-    "TD.controller.columnManager.get('" + column + "').getMediaPreviewSize()");
+  var size = null;
+  if (column) {
+    size = retrieveVariable(
+      column + "-media-preview-size",
+      "TD.controller.columnManager.get('" + column + "').getMediaPreviewSize()");
+  }
   var preview = makeMediaPreview(link, size, imgURL, videoURL);
   var tweetBody = tweet.parentNode;
   var existingMedia = tweetBody.querySelectorAll(".js-media.media-preview:not(.tie-expanded)");
