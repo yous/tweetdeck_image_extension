@@ -220,7 +220,9 @@ function expandLinks(node) {
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
         chrome.runtime.sendMessage({type: "pixiv", url: expandedURL}, null, function(resp) {
-          insertMediaDetail(tweetDetail, expandedURL, resp.url);
+          if (!resp.hasOwnProperty("error")) {
+            insertMediaDetail(tweetDetail, expandedURL, resp.url);
+          }
         });
       } else if (youtubeRegex.test(expandedURL)) {
         link.className += " tie-expanded";
