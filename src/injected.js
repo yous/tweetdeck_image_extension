@@ -157,10 +157,10 @@ function insertOpenGraphMedia(tweet, link, callback) {
 }
 
 function expandLinks(node) {
-  var puushRegex = /https?:\/\/puu\.sh\/(?:[\w-]+\/)*[\w-]+\.(?:gif|jpe?g|png)/i;
-  var instagramRegex = /https?:\/\/(?:www\.)?instagram\.com\/p\/[\w-]+/i;
-  var pixivRegex = /https?:\/\/(?:www\.)?pixiv\.net\/member_illust\.php[\?\w_=&]+/i;
-  var youtubeRegex = /https:\/\/youtu\.be\/([\w-]+)/i;
+  var puushRegex = /^https?:\/\/puu\.sh\/(?:[\w-]+\/)*[\w-]+\.(?:gif|jpe?g|png)/i;
+  var instagramRegex = /^https?:\/\/(?:www\.)?instagram\.com\/p\/[\w-]+/i;
+  var pixivRegex = /^https?:\/\/(?:www\.)?pixiv\.net\/member_illust\.php[\?\w-=&]+/i;
+  var youtubeRegex = /^https:\/\/youtu\.be\/([\w-]+)/i;
 
   var tweets = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet .tweet-text");
   for (var i = 0; i < tweets.length; i++) {
