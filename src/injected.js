@@ -159,7 +159,7 @@ function insertOpenGraphMedia(tweet, link, callback) {
 function expandLinks(node) {
   var puushRegex = /^https?:\/\/puu\.sh\/(?:[\w-]+\/)*[\w-]+\.(?:gif|jpe?g|png)/i;
   var instagramRegex = /^https?:\/\/(?:www\.)?instagram\.com\/p\/[\w-]+/i;
-  var pixivRegex = /^https?:\/\/(?:www\.)?pixiv\.net\/member_illust\.php[\?\w-=&]+/i;
+  var pixivRegex = /^https?:\/\/(?:www\.)?pixiv\.net\/member_illust\.php\?(?:[\w-=]*&)*illust_id=(\d+)(?:&|$)/i;
   var youtubeRegex = /^https:\/\/youtu\.be\/([\w-]+)/i;
 
   var tweets = node.querySelectorAll(".js-stream-item-content .js-tweet.tweet .tweet-text");
@@ -183,7 +183,9 @@ function expandLinks(node) {
         expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
-        chrome.runtime.sendMessage({type: "pixiv", url: expandedURL}, null, function(resp) {
+        var illustId = pixivRegex.exec(expandedURL)[1];
+        var imageURL = "http://embed.pixiv.net/decorate.php?illust_id=" + illustId;
+        chrome.runtime.sendMessage({type: "pixiv", url: imageURL}, null, function(resp) {
           if (!resp.hasOwnProperty("error")) {
             insertMediaPreview(tweet, expandedURL, resp.url);
           }
@@ -219,7 +221,9 @@ function expandLinks(node) {
         expandedURL = forceHTTPS(expandedURL);
         link.setAttribute("data-full-url", expandedURL);
         link.className += " tie-expanded";
-        chrome.runtime.sendMessage({type: "pixiv", url: expandedURL}, null, function(resp) {
+        var illustId = pixivRegex.exec(expandedURL)[1];
+        var imageURL = "http://embed.pixiv.net/decorate.php?illust_id=" + illustId;
+        chrome.runtime.sendMessage({type: "pixiv", url: imageURL}, null, function(resp) {
           if (!resp.hasOwnProperty("error")) {
             insertMediaDetail(tweetDetail, expandedURL, resp.url);
           }

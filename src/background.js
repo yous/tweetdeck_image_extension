@@ -16,35 +16,23 @@ function onRuntimeMessage(msg, sender, sendResponse) {
   var key = msg.type;
   switch (key) {
     case "pixiv":
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", msg.url, true);
-      xhr.onload = function(e) {
-        var container = document.implementation.createHTMLDocument().documentElement;
-        container.innerHTML = xhr.responseText;
-        var imageURL = container.querySelector("meta[property=\"og:image\"]").content;
-        if (!imageURL) {
-          sendResponse({error: true});
-          return;
-        }
-        var img = document.createElement("img");
-        img.src = imageURL;
-        img.onload = function() {
-          var canvas = document.createElement("canvas");
-          canvas.width = img.width;
-          canvas.height = img.height;
-          var ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0);
-          var dataURL = canvas.toDataURL("image/png");
-          sendResponse({url: dataURL});
-          document.querySelector("body").removeChild(img);
-        }
-        img.onerror = function() {
-          sendResponse({error: true});
-          document.querySelector("body").removeChild(img);
-        }
-        document.querySelector("body").appendChild(img);
-      }
-      xhr.send();
+      var img = document.createElement("img");
+      img.src = msg.url;
+      img.onload = function() {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        sendResponse({url: dataURL});
+        document.querySelector("body").removeChild(img);
+      };
+      img.onerror = function() {
+        sendResponse({error: true});
+        document.querySelector("body").removeChild(img);
+      };
+      document.querySelector("body").appendChild(img);
       break;
     default:
       log("Unknown message " + key);
