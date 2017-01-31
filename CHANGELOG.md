@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0
+
+- Refine regular expressions for link
+- Fix for pixiv when its account is logged in
+- Use ESLint
+- Add JSDoc
+
 ## 0.5.1
 
 - Fix bug that media isn't displayed with quote tweets

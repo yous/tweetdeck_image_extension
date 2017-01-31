@@ -1,6 +1,6 @@
 {
   "name": "tweetdeck_image_extension",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Support additional image preview for TweetDeck.",
   "dependencies": {},
   "devDependencies": {
