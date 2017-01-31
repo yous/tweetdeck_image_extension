@@ -1,0 +1,33 @@
+{
+  "name": "tweetdeck_image_extension",
+  "version": "0.5.1",
+  "description": "Support additional image preview for TweetDeck.",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^3.14.1",
+    "eslint-config-google": "^0.7.1"
+  },
+  "scripts": {
+    "test": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yous/tweetdeck_image_extension.git"
+  },
+  "keywords": [
+    "tweetdeck",
+    "image",
+    "preview",
+    "instagram",
+    "puush",
+    "youtube",
+    "pixiv"
+  ],
+  "author": "Chayoung You <yousbe@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yous/tweetdeck_image_extension/issues"
+  },
+  "homepage": "https://github.com/yous/tweetdeck_image_extension",
+  "private": true
+}
