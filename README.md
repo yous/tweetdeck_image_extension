@@ -1,5 +1,7 @@
 # TweetDeck Image Extension
 
+[![Build Status](https://travis-ci.org/yous/tweetdeck_image_extension.svg?branch=master)](https://travis-ci.org/yous/tweetdeck_image_extension)
+
 Support additional image preview for [TweetDeck](https://tweetdeck.twitter.com).
 
 Image preview is supported for:
